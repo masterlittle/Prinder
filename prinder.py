@@ -2,18 +2,12 @@ import ast
 import os
 import sys
 import click
+import yaml
+import os
 
 import requests
 from github3 import login
 from collections import OrderedDict
-
-
-class PythonLiteralOption(click.Option):
-    def type_cast_value(self, ctx, value):
-        try:
-            return ast.literal_eval(value)
-        except:
-            raise click.BadParameter(value)
 
 
 @click.group()
@@ -126,18 +120,26 @@ def send_to_slack(text):
         raise Exception(answer['error'])
 
 
-@cli.command()
-@click.option('--list_of_repos', help='Give list of repos to view pull requests from', cls=PythonLiteralOption,
-              default=[])
-@click.option('--topics', help='Give list of tags to fetch pull requests from these repos', cls=PythonLiteralOption,
-              default=[])
-def run(list_of_repos, topics):
-    lines = fetch_organization_pulls(ORGANIZATION, list_of_repos, topics)
-    if lines:
-        text = INITIAL_MESSAGE + '\n'.join(lines)
-        print(text)
-        send_to_slack(text)
+def run():
+    config = read_config()
+    if not config["config"]["authentication"]["slack_api_token"]:
+        config["config"]["authentication"]["slack_api_token"] = os.environ['PRINDER_SLACK_API_TOKEN']
+    if not config["config"]["authentication"]["github_api_token"]:
+        config["config"]["authentication"]["github_api_token"] = os.environ['PRINDER_GITHUB_API_TOKEN']
+        # lines = fetch_organization_pulls(ORGANIZATION, list_of_repos, topics)
+        # if lines:
+        #     text = INITIAL_MESSAGE + '\n'.join(lines)
+        #     print(text)
+        #     send_to_slack(text)
+
+
+def read_config():
+    with open("prinder_config.yaml", 'r') as stream:
+        try:
+            return yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
 
 
 if __name__ == '__main__':
-    cli()
+    run()

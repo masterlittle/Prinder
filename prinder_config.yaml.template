@@ -1,0 +1,37 @@
+---
+config:
+  authentication:
+    github_api_key: xxx
+    slack_api_token: xxx
+  github:
+    organisation_name: xxx
+    all_repos: false
+    list_of_repos:
+      - test
+      - test2
+    topics:
+      - topic1
+      - topic2
+  notification:
+    mail:
+      enable: false
+      mail_to:
+        - a@a.com
+        - b@b.com
+    slack:
+      enable: false
+      notify_slack_people:
+        - p1
+        - p2
+      notify_slack_channels:
+        - channel1
+        - channel2
+  metrics:
+    statsd:
+      host: xxx
+      port: xxx
+      metrics_to_track:
+        - total_pr: false
+        - avg_pr_open_time: false
+        - closed_pr: false
+
