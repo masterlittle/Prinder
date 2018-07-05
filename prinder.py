@@ -67,7 +67,7 @@ def post_notifications(config, pulls):
                                config["notification"]["slack"]["post_as_user"])
 
     if config["notification"]["mail"]["enable"]:
-        text = notifier.format_pull_requests_for_slack(pulls, config["github"]["organization_name"])
+        text = notifier.format_pull_requests_for_mail(pulls, config["github"]["organization_name"])
         text = append_initial_message(config, text)
         logger.info("Sending mail")
         print(text)
