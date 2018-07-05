@@ -21,7 +21,7 @@ def cli():
 
 
 @cli.command()
-@click.option('--config_file_path', help='Path of config file. eg - /opt/prinder/', default='')
+@click.option('--config_file_path', help='Path of config file. eg - /opt/prinder/', required=True)
 def run(config_file_path):
     config = read_config(config_file_path)
 
