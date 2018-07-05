@@ -1,6 +1,7 @@
 ---
 github_api_token: xxx
 slack_api_token: xxx
+initial_message: 'The following PRs are pending: '
 github:
   organization_name: xxx
   all_repos: false
@@ -16,8 +17,7 @@ notification:
     mail_to:
       - a@a.com
       - b@b.com
-    sender:
-      - c@c.com
+    sender: c@c.com
     host: localhost
   slack:
     enable: true
