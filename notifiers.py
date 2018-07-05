@@ -40,20 +40,28 @@ class Notifier:
                     <head></head>
                     <body>
                     <p>{0}</p>
+                    <table>
                     """.format(initial_message)
         for pull in pull_requests:
             creator = pull.user.login
-            message += """<br><p>"""
-            line = '\n[<b>{0}/{1}]</b> Pull request open by <b>{2}</b>\n'.format(
+            message += """<tr>"""
+            line = '<td>' \
+                   '<b>{0}/{1}]</b>' \
+                   '</td> ' \
+                   '<td>' \
+                   'Opened by <b>{2}</b></td>'\
+                .format(
                 owner.encode('utf-8'),
                 pull.repository.name.encode('utf-8'),
                 creator.encode('utf-8'))
             message += line
 
-            message += """<a href= {0}> # {1} {2} </a>""".format(pull.html_url.encode('utf-8'),
+            message += """<td>
+            <a href= {0}> # {1} {2} </a>
+            </td>""".format(pull.html_url.encode('utf-8'),
                                                                  pull.number,
                                                                  pull.title.encode('utf-8'))
-            message += """</p>"""
+            message += """</tr>"""
             lines.append(line)
         message += """</body></html>"""
 
