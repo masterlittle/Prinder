@@ -59,6 +59,7 @@ def post_notifications(config, pulls):
     if config["notification"]["slack"]["enable"]:
         text = notifier.format_pull_requests_for_slack(pulls, config["github"]["organization_name"])
         text = append_initial_message(config, text)
+        logger.info("Sending message to slack")
         notifier.post_to_slack(config["slack_api_token"],
                                text,
                                config["notification"]["slack"]["notify_slack_channels"],
@@ -68,12 +69,14 @@ def post_notifications(config, pulls):
     if config["notification"]["mail"]["enable"]:
         text = notifier.format_pull_requests_for_slack(pulls, config["github"]["organization_name"])
         text = append_initial_message(config, text)
+        logger.info("Sending mail")
         print(text)
         notifier.send_email("",
                             text,
                             config["notification"]["mail"]["mail_to"],
                             config["notification"]["mail"]["sender"],
-                            config["notification"]["mail"]["host"])
+                            config["notification"]["mail"]["host"],
+                            config["notification"]["mail"]["port"])
 
 
 def read_config(config_file_path):

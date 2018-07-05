@@ -64,7 +64,8 @@ class Notifier:
                    body,
                    receivers,
                    sender,
-                   host='localhost'):
+                   host='localhost',
+                   port=25):
         """
         Utility function to send mail
         :param subject: The subject of the e-mail
@@ -81,7 +82,7 @@ class Notifier:
         msg.attach(MIMEText(body, 'html'))
 
         try:
-            smtpObj = smtplib.SMTP(host)
+            smtpObj = smtplib.SMTP(host, port)
             smtpObj.sendmail(sender, receivers, msg.as_string())
             smtpObj.quit()
             logger.info("Mail sent successfully.")

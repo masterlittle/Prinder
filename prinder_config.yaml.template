@@ -19,6 +19,7 @@ notification:
       - b@b.com
     sender: c@c.com
     host: localhost
+    port: 25
   slack:
     enable: true
     post_as_user: Prinder
