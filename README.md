@@ -15,7 +15,9 @@ pip install prinder
 4. Run the command with the file name as argument if required. If no argument is passed, it will try to find prinder_config.yaml in the working directory.
 ```bash
 prinder run --config_file=<your-configuration-file-path>
-eg - prinder run --config_file=prinder_config.yml
+eg - prinder run
+         OR
+     prinder run --config_file=prinder_config.yml
 ```
 Prinder has a number of configurations using which you can configure hooks to Slack or Email. Some important ones are:
 
