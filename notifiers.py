@@ -44,7 +44,7 @@ class Notifier:
         for pull in pull_requests:
             creator = pull.user.login
             message += """<br><p>"""
-            line = '\n[{0}/{1}] Pull request open by {2}>\n'.format(
+            line = '\n[<b>{0}/{1}]</b> Pull request open by <b>{2}</b>\n'.format(
                 owner.encode('utf-8'),
                 pull.repository.name.encode('utf-8'),
                 creator.encode('utf-8'))
