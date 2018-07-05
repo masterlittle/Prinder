@@ -44,16 +44,14 @@ def get_github_token(config):
             config["github_api_token"] = os.environ['PRINDER_GITHUB_API_TOKEN']
         print(config)
     except KeyError as error:
-        logger.error('Please set the environment variable {0}'.format(error))
-        sys.exit(1)
+        raise Exception('Please set the environment variable. {0}'.format(error))
 
 def get_slack_token(config):
     try:
-        if not config["slack_api_token"]:
+        if config["slack_api_token"] is None:
             config["slack_api_token"] = os.environ['PRINDER_SLACK_API_TOKEN']
     except KeyError as error:
-        logger.error('Please set the environment variable {0}'.format(error))
-        sys.exit(1)
+        logger.error('Please set the environment variable. {0}'.format(error))
 
 
 def post_notifications(config, pulls):
@@ -61,6 +59,9 @@ def post_notifications(config, pulls):
 
     if config["notification"]["slack"]["enable"]:
         get_slack_token(config)
+        if config["slack_api_token"] is None:
+            logger.error("Slack notification not sent because slack token was not found.")
+            return
         text = notifier.format_pull_requests_for_slack(config["initial_message"], pulls, config["github"]["organization_name"])
         logger.info("Sending message to slack")
         notifier.post_to_slack(config["slack_api_token"],
