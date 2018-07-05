@@ -10,7 +10,7 @@ pip install prinder
 ```
 2. Create a configuration file with the name **prinder_config.yaml**. Fill in all the fields or leave them empty if you don't need them. Copy the config template from here - [prinder_config.yaml.template](https://github.com/masterlittle/Prinder/blob/master/prinder_config.yaml.template)
 
-3.Get a github auth token with relevant access and assign it to the environment variable **PRINDER_GITHUB_API_TOKEN** or assign it in the configuration file to **github_api_token**. (Copying the token in the file is not recommended) 
+3. Get a github auth token with relevant access and assign it to the environment variable **PRINDER_GITHUB_API_TOKEN** or assign it in the configuration file to **github_api_token**. (Copying the token in the file is not recommended) 
 
 4. Run the command with the file path as argument. Note that there is no need to give the name of the file.
 ```bash
@@ -23,11 +23,11 @@ eg - prinder run --config_file_path=/opt/prinder/
 ## Features
 Prinder has a number of configurations using which you can configure hooks to Slack or Email. Some important ones are:
 
-1. organization_name: The organization name for which to get pull requests.
-2. list_of_repos: Provide a list of repos for which to get pending pull requests.
-3. topics: Provide a list of topics attached to repositories for which to get pending pull requests.
-4. ignore_repos: List of repos which should be ignored.
-5. slack:post_as_user: The name which will be shown on Slack.
+1. *organization_name*: The organization name for which to get pull requests.
+2. *list_of_repos*: Provide a list of repos for which to get pending pull requests.
+3. *topics*: Provide a list of topics attached to repositories for which to get pending pull requests.
+4. *ignore_repos*: List of repos which should be ignored.
+5. *slack:post_as_user*: The name which will be shown on Slack.
 
 ### Send pull request reminders to Slack
 Get a slack token and assign it to the environment variable **PRINDER_SLACK_API_TOKEN** or assign it in the configuration file to **slack_api_token**. (Copying the token in the file is not recommended)
