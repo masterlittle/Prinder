@@ -52,6 +52,12 @@ class PullReminder:
 
     @staticmethod
     def filter_repos(repos, ignore_repos):
+        """
+        Filter list of repositories acc. to the list passed
+        :param repos: list of repos to check pull request for
+        :param ignore_repos: list of repos to ignore
+        :return: filtered list of repos
+        """
         logger.info("Filtering list of repositories")
         final_list_of_repos = filter(lambda x: x.name not in ignore_repos, repos)
         logger.info("Final filtered repository count is " + str(len(final_list_of_repos)))

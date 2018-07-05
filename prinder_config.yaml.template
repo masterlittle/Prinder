@@ -29,13 +29,3 @@ notification:
     notify_slack_channels:
       - xxx
       - xxx
-metrics:
-  statsd:
-    host: xxx
-    port: xxx
-    prefix: xxx
-    metrics_to_track:
-      - total_pr: false
-      - avg_pr_open_time: false
-      - closed_pr: false
-
