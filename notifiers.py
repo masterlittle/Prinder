@@ -14,13 +14,13 @@ class Notifier:
         pass
 
     @staticmethod
-    def format_pull_requests_for_slack(pull_requests, owner):
+    def format_pull_requests_for_slack(initial_message, pull_requests, owner):
         lines = []
 
-        logger.info("Formatting the text as required")
+        logger.info("Formatting the text for slack as required")
         for pull in pull_requests:
             creator = pull.user.login
-            line = '\n*[{0}/{1}] * Pull request open by *{2}* \n <{3} | #{4} {5}>\n'.format(
+            line = initial_message + ' \n*[{0}/{1}] * Pull request open by *{2}* \n <{3} | #{4} {5}>\n'.format(
                 owner.encode('utf-8'),
                 pull.repository.name.encode('utf-8'),
                 creator.encode('utf-8'),
@@ -32,15 +32,15 @@ class Notifier:
         return lines
 
     @staticmethod
-    def format_pull_requests_for_mail(pull_requests, owner):
+    def format_pull_requests_for_mail(initial_message, pull_requests, owner):
         lines = []
 
-        logger.info("Formatting the text as required")
+        logger.info("Formatting the text for mail as required")
         message = """<html>
                     <head></head>
                     <body>
-                    <p>Open pull requests</p>
-                    """
+                    <p>{0}</p>
+                    """.format(initial_message)
         for pull in pull_requests:
             creator = pull.user.login
             message += """<br><p>"""
