@@ -37,18 +37,19 @@ class Notifier:
 
         logger.info("Formatting the text for mail as required")
         message = """<html>
-                    <head></head>
+                    <head>
+                    </head>
                     <body>
                     <p>{0}</p>
-                    <table>
+                    <table style="border:0.5px solid black"; padding: 1px>
                     """.format(initial_message)
         for pull in pull_requests:
             creator = pull.user.login
-            message += """<tr>"""
-            line = '<td>' \
+            message += """<tr style="border:0.5px solid black"; padding: 1px>"""
+            line = '<td style="border:0.5px solid black; padding: 1px">' \
                    '<b>{0}/{1}]</b>' \
                    '</td> ' \
-                   '<td>' \
+                   '<td style="border:0.5px solid black; padding: 1px">' \
                    'Opened by <b>{2}</b></td>'\
                 .format(
                 owner.encode('utf-8'),
@@ -56,7 +57,7 @@ class Notifier:
                 creator.encode('utf-8'))
             message += line
 
-            message += """<td>
+            message += """<td style="border:0.5px solid black; padding: 1px">
             <a href= {0}> # {1} {2} </a>
             </td>""".format(pull.html_url.encode('utf-8'),
                                                                  pull.number,
