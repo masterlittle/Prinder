@@ -4,6 +4,7 @@ from github3 import login
 
 logger = get_logger(__name__)
 
+
 class PullReminder:
     def __init__(self, configuration):
         self.config = configuration
@@ -12,24 +13,6 @@ class PullReminder:
     def fetch_repository_pulls(repository):
         return [pull for pull in repository.pull_requests()
                 if pull.state == 'open']
-
-    @staticmethod
-    def format_pull_requests(pull_requests, owner):
-        lines = []
-
-        logger.info("Formatting the text as required")
-        for pull in pull_requests:
-            creator = pull.user.login
-            line = '\n*[{0}/{1}] * Pull request open by *{2}* \n <{3} | #{4} {5}>\n'.format(
-                owner.encode('utf-8'),
-                pull.repository.name.encode('utf-8'),
-                creator.encode('utf-8'),
-                pull.html_url.encode('utf-8'),
-                pull.number,
-                pull.title.encode('utf-8'))
-            lines.append(line)
-
-        return lines
 
     def fetch_organization_pulls(self):
         """
@@ -43,7 +26,6 @@ class PullReminder:
 
         client = login(token=self.config["github_api_token"])
         organization = client.organization(organization_name)
-        lines = []
         pulls = []
 
         if all_repos:
@@ -65,9 +47,8 @@ class PullReminder:
                     pulls = pulls + self.fetch_repository_pulls(repository)
 
         pulls = list(OrderedDict.fromkeys(pulls))
-        lines += self.format_pull_requests(pulls, organization_name)
 
-        return lines
+        return pulls
 
     @staticmethod
     def filter_repos(repos, ignore_repos):

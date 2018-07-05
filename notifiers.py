@@ -6,12 +6,61 @@ from logger import get_logger
 from slacker import Slacker
 from slacker import Error
 
+logger = get_logger(__name__)
+
+
 class Notifier:
     def __init__(self):
-        self.logger = get_logger(__name__)
+        pass
 
-    def send_email(self,
-                   subject,
+    @staticmethod
+    def format_pull_requests_for_slack(pull_requests, owner):
+        lines = []
+
+        logger.info("Formatting the text as required")
+        for pull in pull_requests:
+            creator = pull.user.login
+            line = '\n*[{0}/{1}] * Pull request open by *{2}* \n <{3} | #{4} {5}>\n'.format(
+                owner.encode('utf-8'),
+                pull.repository.name.encode('utf-8'),
+                creator.encode('utf-8'),
+                pull.html_url.encode('utf-8'),
+                pull.number,
+                pull.title.encode('utf-8'))
+            lines.append(line)
+
+        return lines
+
+    @staticmethod
+    def format_pull_requests_for_mail(pull_requests, owner):
+        lines = []
+
+        logger.info("Formatting the text as required")
+        message = """<html>
+                    <head></head>
+                    <body>
+                    <p>Open pull requests</p>
+                    """
+        for pull in pull_requests:
+            creator = pull.user.login
+            message += """<br><p>"""
+            line = '\n[{0}/{1}] Pull request open by {2}>\n'.format(
+                owner.encode('utf-8'),
+                pull.repository.name.encode('utf-8'),
+                creator.encode('utf-8'))
+            message += line
+
+            message += """<a href= {0}> # {1} {2} </a>""".format(pull.html_url.encode('utf-8'),
+                                                                 pull.number,
+                                                                 pull.title.encode('utf-8'))
+            message += """</p>"""
+            lines.append(line)
+        message += """</body></html>"""
+
+        return message
+
+    @staticmethod
+    def send_email(subject,
                    body,
                    receivers,
                    sender,
@@ -35,36 +84,36 @@ class Notifier:
             smtpObj = smtplib.SMTP(host)
             smtpObj.sendmail(sender, receivers, msg.as_string())
             smtpObj.quit()
+            logger.info("Mail sent successfully.")
         except smtplib.SMTPException as error:
-            self.logger.error("Unable to send email: {err}".format(err=error))
+            logger.error("Unable to send email: {err}".format(err=error))
 
     def post_to_slack(self, slack_api_token, message, channel, individual_recipients=[], username='Prinder'):
         slack = Slacker(slack_api_token)
         try:
             for c in channel:
-                self.logger.info("Sending notification to " + c)
+                logger.info("Sending notification to " + c)
                 response = slack.chat.post_message('#' + c,
                                                    message,
                                                    username,
                                                    icon_emoji=':bell',
                                                    icon_url=':bell')
-                self.logger.debug(response)
+                logger.debug(response)
                 self.__log_notification_response(response, c)
             for recipient in individual_recipients:
-                self.logger.info("Sending notification to " + recipient)
+                logger.info("Sending notification to " + recipient)
                 response = slack.chat.post_message('@' + recipient,
                                                    message,
                                                    username,
                                                    icon_emoji=':bell:',
                                                    icon_url=':bell:')
-                self.logger.debug(response)
+                logger.debug(response)
                 self.__log_notification_response(response, recipient)
         except Error as error:
-            self.logger.error(str(error))
+            logger.error(str(error))
 
     def __log_notification_response(self, response, recipient):
         if response.successful:
-            self.logger.info("Notification sent to " + recipient)
+            logger.info("Notification sent to " + recipient)
         else:
-            self.logger.error(response.error)
-
+            logger.error(response.error)

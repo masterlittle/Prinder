@@ -12,15 +12,11 @@ pip install prinder
 
 3. Get a github auth token with relevant access and assign it to the environment variable **PRINDER_GITHUB_API_TOKEN** or assign it in the configuration file to **github_api_token**. (Copying the token in the file is not recommended) 
 
-4. Run the command with the file path as argument. Note that there is no need to give the name of the file.
+4. Run the command with the file name as argument.
 ```bash
-prinder run --config_file_path=<your-configuration-file-path>
-eg - prinder run --config_file_path=/opt/prinder/
+prinder run --config_file=<your-configuration-file-path>
+eg - prinder run --config_file=prinder_config.yml
 ```
-
-5. Schedule it as a Cron job, Jenkins job or run it as you desire. 
-
-## Features
 Prinder has a number of configurations using which you can configure hooks to Slack or Email. Some important ones are:
 
 1. *organization_name*: The organization name for which to get pull requests.

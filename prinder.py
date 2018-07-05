@@ -21,9 +21,9 @@ def cli():
 
 
 @cli.command()
-@click.option('--config_file_path', help='Path of config file. eg - /opt/prinder/', required=True)
-def run(config_file_path):
-    config = read_config(config_file_path)
+@click.option('--config_file', help='Path of config file. eg - /opt/prinder/prinder_config.yaml', default='prinder_config.yaml')
+def run(config_file):
+    config = read_config(config_file)
 
     logger.debug("Configuration is: " + str(config))
 
@@ -31,12 +31,15 @@ def run(config_file_path):
 
     pull_reminder = PullReminder(config)
 
-    lines = pull_reminder.fetch_organization_pulls()
+    pulls = pull_reminder.fetch_organization_pulls()
 
-    if lines:
-        text = INITIAL_MESSAGE + '\n'.join(lines)
+    if pulls:
         logger.info("Sending notifications")
-        post_notifications(config, text)
+        post_notifications(config, pulls)
+
+
+def append_initial_message(config, lines):
+    return config["initial_message"] + '\n'.join(lines)
 
 
 def get_api_tokens(config):
@@ -50,10 +53,12 @@ def get_api_tokens(config):
         sys.exit(1)
 
 
-def post_notifications(config, text):
+def post_notifications(config, pulls):
     notifier = Notifier()
 
     if config["notification"]["slack"]["enable"]:
+        text = notifier.format_pull_requests_for_slack(pulls, config["github"]["organization_name"])
+        text = append_initial_message(config, text)
         notifier.post_to_slack(config["slack_api_token"],
                                text,
                                config["notification"]["slack"]["notify_slack_channels"],
@@ -61,6 +66,9 @@ def post_notifications(config, text):
                                config["notification"]["slack"]["post_as_user"])
 
     if config["notification"]["mail"]["enable"]:
+        text = notifier.format_pull_requests_for_slack(pulls, config["github"]["organization_name"])
+        text = append_initial_message(config, text)
+        print(text)
         notifier.send_email("",
                             text,
                             config["notification"]["mail"]["mail_to"],
@@ -69,12 +77,7 @@ def post_notifications(config, text):
 
 
 def read_config(config_file_path):
-    config_file_name = 'prinder_config.yaml'
-    if not config_file_path:
-        path = config_file_name
-    else:
-        path = config_file_path + config_file_name
-    with open(path, 'r') as stream:
+    with open(config_file_path, 'r') as stream:
         try:
             logger.info("Configuration read successfully")
             return yaml.safe_load(stream)
