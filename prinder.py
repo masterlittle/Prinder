@@ -53,7 +53,7 @@ def post_notifications(config, pulls):
     notifier = Notifier()
 
     if config["notification"]["slack"]["enable"]:
-        text = notifier.format_pull_requests_for_slack(pulls, config["github"]["organization_name"])
+        text = notifier.format_pull_requests_for_slack(config["initial_message"], pulls, config["github"]["organization_name"])
         logger.info("Sending message to slack")
         notifier.post_to_slack(config["slack_api_token"],
                                text,
@@ -64,7 +64,6 @@ def post_notifications(config, pulls):
     if config["notification"]["mail"]["enable"]:
         text = notifier.format_pull_requests_for_mail(config["initial_message"], pulls, config["github"]["organization_name"])
         logger.info("Sending mail")
-        print(text)
         notifier.send_email(config["notification"]["mail"]["subject"],
                             text,
                             config["notification"]["mail"]["mail_to"],
