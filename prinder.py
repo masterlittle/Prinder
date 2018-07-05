@@ -71,7 +71,7 @@ def post_notifications(config, pulls):
         text = append_initial_message(config, text)
         logger.info("Sending mail")
         print(text)
-        notifier.send_email("",
+        notifier.send_email(config["notification"]["mail"]["subject"],
                             text,
                             config["notification"]["mail"]["mail_to"],
                             config["notification"]["mail"]["sender"],

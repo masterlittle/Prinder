@@ -18,6 +18,7 @@ notification:
       - a@a.com
       - b@b.com
     sender: c@c.com
+    subject: 'Pull request reminder'
     host: localhost
     port: 25
   slack:
