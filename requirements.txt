@@ -13,8 +13,9 @@ pyasn1==0.4.3
 pycparser==2.18
 pyOpenSSL==18.0.0
 python-dateutil==2.7.3
-PyYAML==3.12
+PyYAML==3.13
 requests==2.19.1
 six==1.11.0
+slacker==0.9.65
 uritemplate==3.0.0
 urllib3==1.23
