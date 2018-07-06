@@ -51,6 +51,7 @@ def get_slack_token(config):
         if config["slack_api_token"] is None:
             config["slack_api_token"] = os.environ['PRINDER_SLACK_API_TOKEN']
     except KeyError as error:
+        print('Please set the environment variable. {0}'.format(error))
         logger.error('Please set the environment variable. {0}'.format(error))
 
 
