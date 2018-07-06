@@ -37,3 +37,5 @@ Get a slack token and assign it to the environment variable **PRINDER_SLACK_API_
 ### Send pull request reminders in email
 Configure a SMTP on your host and provide the details in the configuration file. 
 
+# CONTRIBUTING
+This started as a side project for a requirement that I had and as a way to improve my Python skills. I would warmly welcome any Pull requests and feature requests that you may have. Thanks  
