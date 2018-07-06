@@ -5,8 +5,8 @@ with open('README.rst', 'rb') as f:
 
 setup(
     name='prinder',
-    version='0.1.0',
-    url='http://github.com/masterlittle/prinder',
+    version='1.0.0',
+    url='http://github.com/masterlittle/Prinder',
     author='Shitij Goyal',
     author_email='goyalshitij@gmail.com',
     description='Posts a list of open pull requests for an organization',
