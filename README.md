@@ -12,14 +12,17 @@ pip install prinder
 
 3. Get a github auth token with relevant access and assign it to the environment variable **PRINDER_GITHUB_API_TOKEN** or assign it in the configuration file to **github_api_token**. (Copying the token to the file is not recommended)
 
-4. Run the command with the file name as argument if required. If no argument is passed, it will try to find prinder_config.yaml in the working directory.
+4. Run the command with the file name as argument if required. If no argument is passed, it will try to find prinder_config.yaml in the working directory. The debug parameter can be passed to turn on detailed logging. 
 ```bash
 prinder run --config_file=<your-configuration-file-path>
-eg - prinder run
-         OR
-     prinder run --config_file=prinder_config.yml
+eg -
+    1. prinder run
+    2. prinder run --config_file=prinder_config.yml
+    3. prinder run --debug
 ```
-Prinder has a number of configurations using which you can configure hooks to Slack or Email. Some important ones are:
+
+5. The logs of the service can be found at /var/logs/prinder.log
+### Prinder has a number of configurations using which you can configure hooks to Slack or Email. Some important ones are:
 
 1. *organization_name*: The organization name for which to get pull requests.
 2. *list_of_repos*: Provide a list of repos for which to get pending pull requests.

@@ -22,27 +22,27 @@ def cli():
 
 @cli.command()
 @click.option('--config_file', help='Path of config file. eg - /opt/prinder/prinder_config.yaml', default='prinder_config.yaml')
-def run(config_file):
+@click.option('--debug', help='Turn detailed logging on and off', is_flag=True)
+def run(config_file, debug):
     config = read_config(config_file)
-
+    get_github_token(config)
+    if debug:
+        logger.setLevel('DEBUG')
     logger.debug("Configuration is: " + str(config))
 
-    get_github_token(config)
-
-    pull_reminder = PullReminder(config)
+    pull_reminder = PullReminder(config, debug)
 
     pulls = pull_reminder.fetch_organization_pulls()
 
     if pulls:
         logger.info("Sending notifications")
-        post_notifications(config, pulls)
+        post_notifications(config, pulls, debug)
 
 
 def get_github_token(config):
     try:
         if config["github_api_token"] is None:
             config["github_api_token"] = os.environ['PRINDER_GITHUB_API_TOKEN']
-        print(config)
     except KeyError as error:
         raise Exception('Please set the environment variable. {0}'.format(error))
 
@@ -54,8 +54,8 @@ def get_slack_token(config):
         logger.error('Please set the environment variable. {0}'.format(error))
 
 
-def post_notifications(config, pulls):
-    notifier = Notifier()
+def post_notifications(config, pulls, debug):
+    notifier = Notifier(debug)
 
     if config["notification"]["slack"]["enable"]:
         get_slack_token(config)

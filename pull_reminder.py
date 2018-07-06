@@ -6,11 +6,14 @@ logger = get_logger(__name__)
 
 
 class PullReminder:
-    def __init__(self, configuration):
+    def __init__(self, configuration, debug=False):
+        if debug:
+            logger.setLevel('DEBUG')
         self.config = configuration
 
     @staticmethod
     def fetch_repository_pulls(repository):
+        logger.debug(repository.name)
         return [pull for pull in repository.pull_requests()
                 if pull.state == 'open']
 
@@ -59,6 +62,9 @@ class PullReminder:
         :return: filtered list of repos
         """
         logger.info("Filtering list of repositories")
-        final_list_of_repos = filter(lambda x: x.name not in ignore_repos, repos)
-        logger.info("Final filtered repository count is " + str(len(final_list_of_repos)))
-        return final_list_of_repos
+        if not ignore_repos:
+            return repos
+        else:
+            final_list_of_repos = filter(lambda x: x.name not in ignore_repos, repos)
+            logger.info("Final filtered repository count is " + str(len(final_list_of_repos)))
+            return final_list_of_repos

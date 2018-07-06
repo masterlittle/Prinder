@@ -10,13 +10,13 @@ logger = get_logger(__name__)
 
 
 class Notifier:
-    def __init__(self):
-        pass
+    def __init__(self, debug=False):
+        if debug:
+            logger.setLevel('DEBUG')
 
     @staticmethod
     def format_pull_requests_for_slack(initial_message, pull_requests, owner):
         lines = []
-
         logger.info("Formatting the text for slack as required")
         for pull in pull_requests:
             creator = pull.user.login
@@ -29,7 +29,7 @@ class Notifier:
                 pull.title.encode('utf-8'))
             lines.append(line)
 
-        return lines
+        return '\n'.join(lines)
 
     @staticmethod
     def format_pull_requests_for_mail(initial_message, pull_requests, owner):
@@ -99,6 +99,7 @@ class Notifier:
             logger.error("Unable to send email: {err}".format(err=error))
 
     def post_to_slack(self, slack_api_token, message, channel, individual_recipients=[], username='Prinder'):
+        logger.debug(message)
         slack = Slacker(slack_api_token)
         try:
             for c in channel:
