@@ -11,6 +11,8 @@ github:
     - xxx
   ignore_repos:
     - xxx
+  ignore_labels:
+    - wip
 notification:
   mail:
     enable: false

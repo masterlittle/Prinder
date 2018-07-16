@@ -26,6 +26,7 @@ class PullReminder:
         topics = self.config["github"]["topics"]
         all_repos = self.config["github"]["all_repos"]
         ignore_repos = self.config["github"]["ignore_repos"]
+        ignore_labels = self.config["github"]["ignore_labels"]
 
         client = login(token=self.config["github_api_token"])
         organization = client.organization(organization_name)
@@ -50,8 +51,27 @@ class PullReminder:
                     pulls = pulls + self.fetch_repository_pulls(repository)
 
         pulls = list(OrderedDict.fromkeys(pulls))
+        return self.filter_labels(pulls, ignore_labels)
 
-        return pulls
+    @staticmethod
+    def filter_labels(pulls, ignore_labels):
+
+        def has_labels(pull):
+            if not pull.labels:
+                return True
+            else:
+                for label in pull.labels:
+                    if label['name'] in ignore_labels:
+                        return False
+                return True
+
+        logger.info("Filtering pull requests based on labels")
+        if not ignore_labels:
+            return pulls
+        else:
+            final_list_of_pulls = filter(lambda x: has_labels(x), pulls)
+            logger.info("Final filtered pull count is " + str(len(final_list_of_pulls)))
+            return final_list_of_pulls
 
     @staticmethod
     def filter_repos(repos, ignore_repos):
