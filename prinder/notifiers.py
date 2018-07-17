@@ -18,17 +18,29 @@ class Notifier:
     def format_pull_requests_for_slack(initial_message, pull_requests, owner):
         lines = []
         logger.info("Formatting the text for slack as required")
+        repos_pr = dict()
         for pull in pull_requests:
-            creator = pull.user.login
-            line = initial_message + ' \n*[{0}/{1}] * Pull request open by *{2}* \n <{3} | #{4} {5}>\n'.format(
-                owner.encode('utf-8'),
-                pull.repository.name.encode('utf-8'),
-                creator.encode('utf-8'),
-                pull.html_url.encode('utf-8'),
-                pull.number,
-                pull.title.encode('utf-8'))
-            lines.append(line)
+            repo_name = pull.repository.name.encode('utf-8')
+            prs = repos_pr.get(repo_name, [])
+            prs.append(pull)
+            repos_pr[repo_name] = prs
 
+        for repo_name, pull_requests in repos_pr.iteritems():
+            repo = pull_requests[0].repository
+            lines.append(
+                "\n*{initial_message} <{repo_url}|{repo_name}>*\n".format(
+                    initial_message=initial_message,
+                    repo_name=repo.name.encode('utf-8'),
+                    repo_url=repo.html_url.encode('utf-8'),
+                ))
+            for pull in pull_requests:
+                lines.append(
+                    "- <{pull_url} | #{pull_number} {pull_name} > by {author}".format(
+                        pull_url=pull.html_url.encode('utf-8'),
+                        pull_number=pull.number,
+                        pull_name=pull.title.encode('utf-8'),
+                        author=pull.user.login.encode('utf-8'),
+                    ))
         return '\n'.join(lines)
 
     @staticmethod

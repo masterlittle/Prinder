@@ -67,8 +67,8 @@ def post_notifications(config, pulls, debug):
         logger.info("Sending message to slack")
         notifier.post_to_slack(config["slack_api_token"],
                                text,
-                               config["notification"]["slack"]["notify_slack_channels"],
-                               config["notification"]["slack"]["notify_slack_members"],
+                               config["notification"]["slack"]["notify_slack_channels"] or [],
+                               config["notification"]["slack"]["notify_slack_members"] or [],
                                config["notification"]["slack"]["post_as_user"])
 
     if config["notification"]["mail"]["enable"]:
