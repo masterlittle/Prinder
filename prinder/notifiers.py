@@ -1,4 +1,5 @@
 import json
+import datetime
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -33,13 +34,15 @@ class Notifier:
                     repo_name=repo.name.encode('utf-8'),
                     repo_url=repo.html_url.encode('utf-8'),
                 ))
-            for pull in pull_requests:
+            for pull in reversed(pull_requests):
+                delta = datetime.datetime.now(pull.created_at.tzinfo) - pull.created_at
                 lines.append(
-                    "- <{pull_url} | #{pull_number} {pull_name} > by {author}".format(
+                    "- <{pull_url} | #{pull_number} {pull_name} > _[{days} days]_ by {author}".format(
                         pull_url=pull.html_url.encode('utf-8'),
                         pull_number=pull.number,
                         pull_name=pull.title.encode('utf-8'),
                         author=pull.user.login.encode('utf-8'),
+                        days=delta.days
                     ))
         return '\n'.join(lines)
 
