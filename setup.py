@@ -6,7 +6,7 @@ with open('README.MD', 'rb') as f:
 
 setup(
     name='prinder',
-    version='1.1.1',
+    version='1.2.0',
     url='http://github.com/masterlittle/Prinder',
     author='Shitij Goyal',
     author_email='goyalshitij@gmail.com',
@@ -16,6 +16,8 @@ setup(
     license='MIT',
     packages=find_packages(),
     install_requires=[
+        'Jinja2==2.10',
+        'MarkupSafe==1.0',
         'asn1crypto==0.24.0',
         'certifi==2018.4.16',
         'cffi==1.11.5',

@@ -1,0 +1,22 @@
+<html>
+<head>
+</head>
+<body>
+<p>{{ initial_message }}</p>
+<table style="border:1px solid black">
+    {% for pull in pull_requests %}
+    <tr style="border:1px solid black ; padding: 1px">
+        <td style="border:1px solid black; padding: 1px">
+            <b>{{ owner }}/{{ pull.repository.name }}</b>
+        </td>
+        <td style="border:1px solid black; padding: 1px">
+            Opened by <b>{{ pull.user.login }}</b>
+        </td>
+        <td style="border:1px solid black; padding: 1px">
+            <a href={{pull.html_url}}> # {{ pull.number }} {{ pull.title }} </a>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>

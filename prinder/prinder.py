@@ -1,11 +1,11 @@
-import sys
-
-from notifiers import Notifier
 import os
+from notifiers.mail_notifier import MailNotifier
+from notifiers.slack_notifier import SlackNotifier
 import yaml
 from logger import get_logger
 import click
 from pull_reminder import PullReminder
+from utils import set_debug_level
 
 INITIAL_MESSAGE = """\
 Hi! There's a few open pull requests you should take a \
@@ -26,8 +26,7 @@ def cli():
 def run(config_file, debug):
     config = read_config(config_file)
     get_github_token(config)
-    if debug:
-        logger.setLevel('DEBUG')
+    set_debug_level(debug)
     logger.debug("Configuration is: " + str(config))
 
     pull_reminder = PullReminder(config, debug)
@@ -56,30 +55,30 @@ def get_slack_token(config):
 
 
 def post_notifications(config, pulls, debug):
-    notifier = Notifier(debug)
-
     if config["notification"]["slack"]["enable"]:
         get_slack_token(config)
         if config["slack_api_token"] is None:
             logger.error("Slack notification not sent because slack token was not found.")
             return
-        text = notifier.format_pull_requests_for_slack(config["initial_message"], pulls, config["github"]["organization_name"])
+
+        template_location = config["notification"]["slack"]["template_location"]
+        if template_location is None:
+            template_location = 'slack_template.template'
+        notifier = SlackNotifier(template_location, debug)
+
+        text = notifier.format(config["initial_message"], pulls, config["github"]["organization_name"])
         logger.info("Sending message to slack")
-        notifier.post_to_slack(config["slack_api_token"],
-                               text,
-                               config["notification"]["slack"]["notify_slack_channels"] or [],
-                               config["notification"]["slack"]["notify_slack_members"] or [],
-                               config["notification"]["slack"]["post_as_user"])
+        notifier.notify(text, config["notification"]["slack"])
 
     if config["notification"]["mail"]["enable"]:
-        text = notifier.format_pull_requests_for_mail(config["initial_message"], pulls, config["github"]["organization_name"])
+        template_location = config["notification"]["mail"]["template_location"]
+        if template_location is None:
+            template_location = 'mail_template.html'
+        notifier = MailNotifier(template_location, debug)
+
+        text = notifier.format(config["initial_message"], pulls, config["github"]["organization_name"])
         logger.info("Sending mail")
-        notifier.send_email(config["notification"]["mail"]["subject"],
-                            text,
-                            config["notification"]["mail"]["mail_to"],
-                            config["notification"]["mail"]["sender"],
-                            config["notification"]["mail"]["host"],
-                            config["notification"]["mail"]["port"])
+        notifier.notify(text, config["notification"]["mail"])
 
 
 def read_config(config_file_path):

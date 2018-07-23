@@ -16,6 +16,7 @@ github:
 notification:
   mail:
     enable: false
+    template_location:
     mail_to:
       - a@a.com
       - b@b.com
@@ -25,6 +26,7 @@ notification:
     port: 25
   slack:
     enable: true
+    template_location:
     post_as_user: Prinder
     notify_slack_members:
       - xxx
