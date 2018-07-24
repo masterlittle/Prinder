@@ -10,7 +10,7 @@ pip install prinder
 ```
 2. Create a configuration file. The default filename is **prinder_config.yaml** but you can name it whatever you want. Fill in all the fields or leave them empty if you don't need them. Copy the config template from here - [prinder_config.yaml.template](https://github.com/masterlittle/Prinder/blob/master/prinder_config.yaml.template)
 
-3. Get a github auth token with relevant access and assign it to the environment variable **PRINDER_GITHUB_API_TOKEN** or assign it in the configuration file to **github_api_token**. (Copying the token to the file is not recommended)![token](https://github.com/masterlittle/Prinder/blob/update-readme/github_token_permissions.png)
+3. Get a github auth token with relevant access and assign it to the environment variable **PRINDER_GITHUB_API_TOKEN** or assign it in the configuration file to **github_api_token**. (Copying the token to the file is not recommended)![token](https://github.com/masterlittle/Prinder/blob/master/github_token_permissions.png)
 
 4. Run the command with the file name as argument if required. If no argument is passed, it will try to find prinder_config.yaml in the working directory. The debug parameter can be passed to turn on detailed logging. 
 ```bash
