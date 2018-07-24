@@ -1,5 +1,5 @@
 # Prinder
-Pull Request reminder for Github.
+Pull Request reminder for Github with numerous configurations and templating feature using the powerful Jinja2
 
 ## Installation and Configuration
 On *nix systems:-
@@ -29,8 +29,28 @@ eg -
 2. *list_of_repos*: Provide a list of repos for which to get pending pull requests.
 3. *topics*: Provide a list of topics attached to repositories for which to get pending pull requests.
 4. *ignore_repos*: List of repos which should be ignored.
-5. *slack:post_as_user*: The name which will be shown on Slack.
-6. *initial_message*: The text that will appear at the the top in the notification hooks.
+5. *ignore_labels*: List of labels assigned to pull requests to be ignored.
+6. *slack:post_as_user*: The name which will be shown on Slack.
+7. *initial_message*: The text that will appear at the the top in the notification hooks.
+
+### Formatting the notifications
+ You can set your own look and feel of notifications and override the default using the templating files. The templating uses Jinja2 so everything is highly configurable.
+
+ **For Slack**
+ 1. Create a template file. You can have a look at slack_template.template which is the default.
+ 2. Give the path to the template file in your configuration file.
+
+  **For Mail**
+ 1. Create a template file. You can have a look at mail_template.html which is the default.
+ 2. Give the path to the template file in your configuration file.
+
+ List of available information is :-
+  1. Owner
+  2. Initial Message
+  3. List of pull request object
+  4. A dictionary having pull requests with the repository name as the key
+  5. *time_delta* function to calculate the number of days since pull request created
+
 
 ### Send pull request reminders to Slack
 Get a slack token and assign it to the environment variable **PRINDER_SLACK_API_TOKEN** or assign it in the configuration file to **slack_api_token**. (Copying the token to the file is not recommended)

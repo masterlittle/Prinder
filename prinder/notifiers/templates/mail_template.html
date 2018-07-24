@@ -1,0 +1,39 @@
+<html>
+<head>
+</head>
+<body>
+<b>{{ initial_message }}</b>
+<table style="border:1px solid black">
+    <tr>
+        <td style="border:1px solid black; padding: 2px">
+            <b>Repository</b>
+        </td>
+        <td style="border:1px solid black; padding: 2px">
+            <b>Opened by</b>
+        </td>
+        <td style="border:1px solid black; padding: 2px">
+            <b>Time elapsed</b>
+        </td>
+        <td style="border:1px solid black; padding: 2px">
+            <b>Pull Request</b>
+        </td>
+    </tr>
+    {% for pull in pull_requests %}
+    <tr style="border:1px solid black ; padding: 2px">
+        <td style="border:1px solid black; padding: 2px">
+            <i>{{ owner }}/{{ pull.repository.name }}</i>
+        </td>
+        <td style="border:1px solid black; padding: 2px">
+            {{ pull.user.login }}
+        </td>
+        <td style="border:1px solid black; padding: 2px">
+            <i>{{time_delta(pull).days}} days</i>
+        </td>
+        <td style="border:1px solid black; padding: 1px">
+            - <a href={{pull.html_url}}> # {{ pull.number }} {{ pull.title }} </a>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>

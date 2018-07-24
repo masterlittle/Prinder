@@ -1,0 +1,8 @@
+{% for repo_name, pull_requests in repos_pr.items() %}
+    {% set repo = pull_requests[0].repository %}
+
+    *{{ initial_message }} <{{ repo.html_url }}|{{ repo.name }}>*
+    {% for pull in pull_requests|reverse %}
+        - <{{ pull.html_url }} | #{{ pull.number }} {{ pull.title }} > _[{{ time_delta(pull).days }} days]_ by {{ pull.user.login }}
+    {% endfor %}
+{% endfor %}
