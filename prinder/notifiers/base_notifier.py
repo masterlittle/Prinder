@@ -1,8 +1,12 @@
 from abc import ABCMeta, abstractmethod
 import jinja2
+import os
 
-from utilities import set_debug_level, time_delta, segregate_pr_by_repo
-from logger import get_logger
+# sys.path.append(r'prinder/utilities.py')
+# sys.path.append(r'prinder/logger.py')
+
+from prinder.utilities import set_debug_level, time_delta, segregate_pr_by_repo
+from prinder.logger import get_logger
 
 
 class BaseNotifier:
@@ -24,7 +28,8 @@ class BaseNotifier:
     def __resolve_template_location(self):
         location = self.template.rsplit('/', 1)
         if len(location) == 1:
-            template_path = ''
+
+            template_path = os.path.join(os.path.dirname(__file__), 'templates')
             template_file = self.template
         else:
             template_path = location[0]

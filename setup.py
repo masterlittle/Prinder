@@ -6,7 +6,7 @@ with open('README.MD', 'rb') as f:
 
 setup(
     name='prinder',
-    version='1.2.0',
+    version='1.2.4',
     url='http://github.com/masterlittle/Prinder',
     author='Shitij Goyal',
     author_email='goyalshitij@gmail.com',
