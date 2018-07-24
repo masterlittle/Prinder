@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from logger import get_logger
 from github3 import login
-from utils import set_debug_level
+from utilities import set_debug_level
 
 logger = get_logger(__name__)
 
