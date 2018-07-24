@@ -9,13 +9,15 @@ class MailNotifier(BaseNotifier):
     def __init__(self, template, debug):
         super(MailNotifier, self).__init__(template, debug)
 
-    def notify(self, message, **kwargs):
+    def notify(self, message, config):
 
-        receivers = kwargs["mail_to"]
-        sender = kwargs["sender"]
-        host = kwargs["host"]
-        port = kwargs["port"]
-        subject = kwargs["subject"]
+        receivers = config["mail_to"]
+        sender = config["sender"]
+        host = config["host"]
+        port = config["port"]
+        subject = config["subject"]
+
+        super(MailNotifier, self).notify(message, config)
 
         msg = MIMEMultipart('alternative')
         msg['From'] = sender

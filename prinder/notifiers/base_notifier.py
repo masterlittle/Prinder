@@ -1,10 +1,11 @@
 from abc import ABCMeta, abstractmethod
 import jinja2
-from prinder.logger import get_logger
-from prinder.utils import set_debug_level, time_delta, segregate_pr_by_repo
+
+from utilities import set_debug_level, time_delta, segregate_pr_by_repo
+from logger import get_logger
 
 
-class BaseNotifier(template='', debug=False):
+class BaseNotifier:
     __metaclass__ = ABCMeta
 
     def __init__(self, template, debug):
@@ -16,7 +17,7 @@ class BaseNotifier(template='', debug=False):
     def get_jinja_template(self):
         template_file, template_path = self.__resolve_template_location()
         template_loader = jinja2.FileSystemLoader(searchpath=template_path)
-        template_env = jinja2.Environment(loader=template_loader)
+        template_env = jinja2.Environment(loader=template_loader, trim_blocks=True, lstrip_blocks=True)
         template_env.globals['time_delta'] = time_delta
         return template_env.get_template(template_file)
 
@@ -31,7 +32,7 @@ class BaseNotifier(template='', debug=False):
         return template_file, template_path
 
     @abstractmethod
-    def notify(self, message, **kwargs):
+    def notify(self, message, config):
         pass
 
     @abstractmethod

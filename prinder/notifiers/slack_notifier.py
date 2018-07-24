@@ -7,13 +7,13 @@ class SlackNotifier(BaseNotifier):
     def __init__(self, template, debug):
         super(SlackNotifier, self).__init__(template, debug)
 
-    def notify(self, message, **kwargs):
-        slack_token = kwargs["slack_api_token"]
-        channels = kwargs["notify_slack_channels"] or []
-        members = kwargs["notify_slack_members"] or []
-        user = kwargs["post_as_user"]
+    def notify(self, message, config):
+        slack_token = config['slack_api_token']
+        channels = config["notify_slack_channels"] or []
+        members = config["notify_slack_members"] or []
+        user = config["post_as_user"]
 
-        super(SlackNotifier, self).notify()
+        super(SlackNotifier, self).notify(message, config)
         self.logger.debug(message)
         slack = Slacker(slack_token)
         try:

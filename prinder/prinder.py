@@ -5,13 +5,7 @@ import yaml
 from logger import get_logger
 import click
 from pull_reminder import PullReminder
-from utils import set_debug_level
-
-INITIAL_MESSAGE = """\
-Hi! There's a few open pull requests you should take a \
-look at:
-
-"""
+from utilities import set_debug_level
 
 logger = get_logger(__name__)
 
@@ -26,7 +20,7 @@ def cli():
 def run(config_file, debug):
     config = read_config(config_file)
     get_github_token(config)
-    set_debug_level(debug)
+    set_debug_level(logger, debug)
     logger.debug("Configuration is: " + str(config))
 
     pull_reminder = PullReminder(config, debug)
@@ -47,8 +41,8 @@ def get_github_token(config):
 
 def get_slack_token(config):
     try:
-        if config["slack_api_token"] is None:
-            config["slack_api_token"] = os.environ['PRINDER_SLACK_API_TOKEN']
+        if config["notification"]["slack"]["slack_api_token"] is None:
+            config["notification"]["slack"]["slack_api_token"] = os.environ['PRINDER_SLACK_API_TOKEN']
     except KeyError as error:
         print('Please set the environment variable. {0}'.format(error))
         logger.error('Please set the environment variable. {0}'.format(error))
@@ -57,7 +51,7 @@ def get_slack_token(config):
 def post_notifications(config, pulls, debug):
     if config["notification"]["slack"]["enable"]:
         get_slack_token(config)
-        if config["slack_api_token"] is None:
+        if config["notification"]["slack"]["slack_api_token"] is None:
             logger.error("Slack notification not sent because slack token was not found.")
             return
 

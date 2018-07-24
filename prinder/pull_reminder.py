@@ -1,14 +1,14 @@
 from collections import OrderedDict
 from logger import get_logger
 from github3 import login
-from prinder.utils import set_debug_level
+from utils import set_debug_level
 
 logger = get_logger(__name__)
 
 
 class PullReminder:
     def __init__(self, configuration, debug=False):
-        set_debug_level(debug)
+        set_debug_level(logger, debug)
         self.config = configuration
 
     @staticmethod
