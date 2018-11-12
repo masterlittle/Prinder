@@ -34,7 +34,7 @@ setup(
         'pyOpenSSL==18.0.0',
         'python-dateutil==2.7.3',
         'PyYAML==3.13',
-        'requests==2.19.1',
+        'requests>=2.20.0',
         'six==1.11.0',
         'slacker==0.9.65',
         'uritemplate==3.0.0',
