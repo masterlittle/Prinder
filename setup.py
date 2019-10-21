@@ -38,7 +38,7 @@ setup(
         'six==1.11.0',
         'slacker==0.9.65',
         'uritemplate==3.0.0',
-        'urllib3==1.23'
+        'urllib3==1.24.2'
         ],
     classifiers=[
         'Programming Language :: Python :: 2.7',
