@@ -23,7 +23,7 @@ setup(
         'cffi==1.11.5',
         'chardet==3.0.4',
         'click==6.7',
-        'cryptography==2.3.0',
+        'cryptography==3.2',
         'enum34==1.1.6',
         'github3.py==1.1.0',
         'idna==2.7',
