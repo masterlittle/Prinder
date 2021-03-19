@@ -16,7 +16,7 @@ setup(
     license='MIT',
     packages=find_packages(),
     install_requires=[
-        'Jinja2==2.10',
+        'Jinja2==2.11.3',
         'MarkupSafe==1.0',
         'asn1crypto==0.24.0',
         'certifi==2018.4.16',
