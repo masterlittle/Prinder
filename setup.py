@@ -33,7 +33,7 @@ setup(
         'pycparser==2.18',
         'pyOpenSSL==18.0.0',
         'python-dateutil==2.7.3',
-        'PyYAML==3.13',
+        'PyYAML==5.4',
         'requests>=2.20.0',
         'six==1.11.0',
         'slacker==0.9.65',
