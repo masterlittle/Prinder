@@ -19,7 +19,7 @@ setup(
         'Jinja2==2.10',
         'MarkupSafe==1.0',
         'asn1crypto==0.24.0',
-        'certifi==2018.4.16',
+        'certifi==2022.12.7',
         'cffi==1.11.5',
         'chardet==3.0.4',
         'click==6.7',
